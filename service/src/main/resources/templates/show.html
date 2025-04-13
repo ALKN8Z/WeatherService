@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Weather Service</title>
+    <style>
+        /* Базовые стили */
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 2rem;
+            background-color: #f0f2f5;
+            color: #1a1a1a;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Заголовок */
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 2.5rem;
+            font-weight: 300;
+        }
+
+        /* Форма */
+        form {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            margin-bottom: 2rem;
+            display: flex;
+            gap: 1rem;
+        }
+
+        input[type="text"] {
+            flex: 1;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+
+        button {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.3s ease, transform 0.1s ease;
+        }
+
+        button:hover {
+            background: #2980b9;
+            transform: translateY(-1px);
+        }
+
+        /* Блок погоды */
+        .weather-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            margin-bottom: 2rem;
+        }
+
+        .weather-card h2 {
+            color: #2c3e50;
+            margin-top: 0;
+            font-weight: 500;
+        }
+
+        .weather-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .weather-info p {
+            margin: 0.5rem 0;
+            padding: 0.8rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        /* История запросов */
+        .history-section {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .history-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .history-list li {
+            padding: 1rem 0;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .history-list li:last-child {
+            border-bottom: none;
+        }
+
+        /* Сообщение об ошибке */
+        .error-message {
+            background: #ffe3e3;
+            color: #c0392b;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            border: 1px solid #ffc9c9;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 600px) {
+            body {
+                padding: 1rem;
+            }
+
+            form {
+                flex-direction: column;
+            }
+
+            button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+<h1>Узнать погоду</h1>
+<form action="/weather" method="get">
+    <input type="text" name="city" placeholder="Введите название города">
+    <button type="submit">Поиск</button>
+</form>
+
+<div th:if="${weather}" class="weather-card">
+    <h2>Погода в [[${weather.location.name}]], [[${weather.location.region}]], [[${weather.location.country}]]:</h2>
+    <div class="weather-info">
+        <p>Температура: [[${weather.current.tempC}]]°C</p>
+        <p>Ощущается как: [[${weather.current.feelsLikeC}]]°C</p>
+        <p>Последнее обновление данных: [[${weather.current.lastUpdated}]]</p>
+    </div>
+</div>
+
+<div th:if="${error}" class="error-message">
+    <p>Город не найден!</p>
+</div>
+
+<div class="history-section">
+    <h3>История запросов (последние 10 городов):</h3>
+    <ul class="history-list" th:each="city : ${history}">
+        <li>
+            <span th:text="${city.name}"></span>
+            <span style="color: #666; font-size: 0.9em;">
+                    [[${city.timeOfRequest.toString().substring(0, 10)}]]
+                    [[${city.timeOfRequest.toString().substring(11, 16)}]]
+                </span>
+        </li>
+    </ul>
+</div>
+</body>
+</html>
