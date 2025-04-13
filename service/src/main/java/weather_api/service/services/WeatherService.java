@@ -18,10 +18,13 @@ public class WeatherService {
     @Value("${weather.api.key}")
     private String apiKey;
 
+    @Value("${weather.url}")
+    private String url;
+
     private final WebClient webClient;
 
     public WeatherService(WebClient.Builder webClientBuilder) {
-        this.webClient = webClientBuilder.baseUrl("http://api.weatherapi.com/v1").build();
+        this.webClient = webClientBuilder.baseUrl(url).build();
     }
 
     @Cacheable(value = "weather-cache", key = "#city")
