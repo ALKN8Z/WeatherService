@@ -32,4 +32,4 @@
 ```properties
 # application.properties
 spring.data.redis.host=localhost
-weather.api.url=https://api.openweathermap.org/data/2.5
+weather.api.url=http://api.weatherapi.com/v1
