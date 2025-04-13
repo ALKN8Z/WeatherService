@@ -1,5 +1,4 @@
 HELP.md
-src/main/resources/application.yaml
 target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
@@ -31,3 +30,11 @@ build/
 
 ### VS Code ###
 .vscode/
+
+
+# Игнорировать все YAML-файлы
+*.yaml
+*.yml
+
+# Логи
+*.log
