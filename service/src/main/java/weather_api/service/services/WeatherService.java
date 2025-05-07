@@ -9,6 +9,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.server.ServerErrorException;
 import reactor.core.publisher.Mono;
 import weather_api.service.dto.WeatherResponse;
 import weather_api.service.exceptions.CityNotFoundException;
